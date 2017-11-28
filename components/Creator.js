@@ -1,11 +1,28 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, PanResponder, Animated } from 'react-native';
+import { StyleSheet, Text, View, Image, PanResponder, Animated,  Button } from 'react-native';
+import Expo from 'expo';
 
 export default () =>
   <View>
     <Text>Lets create</Text>
-    <Dragger/>
+    <Snapshoter/>
   </View>
+
+class Snapshoter extends React.Component{
+  handleScreenshot(){
+    Expo.takeSnapshotAsync(this._screenshot_window)
+  }
+  render(){
+    return (
+      <View>
+        <Button title="Scrine !" onPress={this.handleScreenshot}/>
+        <View ref={component => this._screenshot_window = component}>
+          <Dragger/>
+        </View>
+      </View>
+    )
+  }
+}
 
 class Dragger extends React.Component{
   state = {pan: new Animated.ValueXY()}
