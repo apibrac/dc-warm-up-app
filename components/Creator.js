@@ -9,14 +9,22 @@ export default () =>
   </View>
 
 class Snapshoter extends React.Component{
-  handleScreenshot(){
-    Expo.takeSnapshotAsync(this._screenshot_window)
+  handleScreenshot = () => {
+    if(this.refs && this.refs.content)
+      Expo.takeSnapshotAsync(this.refs.content, {
+        format: "png",
+        quality: 1,
+        result: 'file',
+        height: 100,
+        width: 100,
+      });
   }
+
   render(){
     return (
       <View>
         <Button title="Scrine !" onPress={this.handleScreenshot}/>
-        <View ref={component => this._screenshot_window = component}>
+        <View collapsable={false} ref="content">
           <Dragger/>
         </View>
       </View>
