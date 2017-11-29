@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, PanResponder, Animated,  Button } from 'react-native';
 import Expo from 'expo';
+import config from '../config';
+const { SERVER_ENDPOINT } = config;
 
 export default () =>
   <View>
@@ -17,6 +19,33 @@ class Snapshoter extends React.Component{
         result: 'file',
         height: 100,
         width: 100,
+      })
+      .then(uri=>{
+        // Create the form data object
+        var data = new FormData();
+        data.append('picture', {uri, name: 'screenhot.jpg', type: 'image/jpg'});
+
+        // Create the config object for the POST
+        // You typically have an OAuth2 token that you use for authentication
+        const config = {
+         method: 'POST',
+         headers: {
+           'Accept': 'application/json',
+           'Content-Type': 'multipart/form-data;',
+         },
+         body: data,
+        }
+
+        console.log(SERVER_ENDPOINT)
+        fetch(SERVER_ENDPOINT, config)
+         .then((responseData) => {
+             // Log the response form the server
+             // Here we get what we sent to Postman back
+             console.log(responseData);
+         })
+         .catch(err => {
+           console.log(err);
+         })
       });
   }
 
